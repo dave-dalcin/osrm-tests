@@ -1,0 +1,1928 @@
+{
+	"info": {
+		"_postman_id": "09459b58-b19b-46fb-90dc-bd8ad308f6ff",
+		"name": "OSRM_Testing",
+		"description": "# Introduction\nThis Collection performs Tests on OSRM API\n\n# Overview\nThis Collection performs Tests on the Services: Nearest, Route, Trip and Table on Positive and Negative scopes\n\n# Authentication\nThe API does not need Authentication\n\n# Error Codes\n400 and 422\n\n# Rate limit\nN/A",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Positive Tests",
+			"item": [
+				{
+					"name": "Nearest",
+					"item": [
+						{
+							"name": "TC_1_Nearest_N_Points",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"//Validates Response Time and Code",
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"",
+											"//Validates Nearest points",
+											"eval(pm.environment.get(\"commonNearestTests\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											"//Change the variable below in order to increase or decrease Nearest points",
+											"let myNearestPoints = 5;",
+											"pm.environment.set(\"NEAREST_POINTS\",myNearestPoints);",
+											"",
+											"var commonResponseValidations = () => {",
+											"    //Performs the Common Response Validations",
+											"    let myMaxRespTime = parseInt(postman.getEnvironmentVariable(\"MAX_RESPONSE_TIME\"));",
+											"    let myRespCodeOk = postman.getEnvironmentVariable(\"RESPONSE_CODE_OK\");",
+											"",
+											"    pm.test(\"Response Time Must Be Less Than \" + myMaxRespTime, function () {",
+											"        pm.expect(pm.response.responseTime).to.be.below(myMaxRespTime);",
+											"    });",
+											"",
+											"    pm.test(\"Status Code Must Be 200\", function () {",
+											"        pm.response.to.have.status(200);",
+											"    });",
+											"};",
+											"",
+											"var commonNearestTests = () => {",
+											"    ",
+											"    let myNearestPoints = postman.getEnvironmentVariable(\"NEAREST_POINTS\");",
+											"    myJson = JSON.parse(responseBody);",
+											"    ",
+											"    pm.test(\"All Waypoints Must Have Name\", function () {",
+											"        ",
+											"        for(i=0; i<myNearestPoints; i++){",
+											"        pm.expect(pm.response.json().waypoints[i].name).not.equal(null);",
+											"",
+											"    }",
+											"    });",
+											"    ",
+											"    pm.test(\"All Waypoints Must Have Distance\", function () {",
+											"        ",
+											"        for(i=0; i<myNearestPoints; i++){",
+											"        pm.expect(pm.response.json().waypoints[i].distance).not.equal(null);",
+											"",
+											"    }",
+											"    });",
+											"    ",
+											"    pm.test(\"All Waypoints Must Have Longitude and Latitude\", function () {",
+											"        ",
+											"        for(i=0; i<myNearestPoints; i++){",
+											"            pm.expect(pm.response.json().waypoints[i].location[0]).not.equal(null);",
+											"            pm.expect(pm.response.json().waypoints[i].location[1]).not.equal(null);",
+											"",
+											"        }",
+											"    });",
+											"    ",
+											"    pm.test(\"All Waypoints Must Distance Bigger than the Previous One\", function () {",
+											"        let myPreviousDistance = -1;",
+											"        let myActualDistance = 0; ",
+											"        for(i=0; i<myNearestPoints; i++){",
+											"            ",
+											"            myActualDistance = pm.response.json().waypoints[i].distance;",
+											"            pm.expect(myActualDistance).to.be.above(myPreviousDistance);",
+											"            ",
+											"            myPreviousDistance = myActualDistance;",
+											"",
+											"        }",
+											"    });",
+											"    ",
+											"};",
+											"",
+											"pm.environment.set(\"commonNearestTests\", commonNearestTests.toString());",
+											"pm.environment.set(\"commonResponseValidations\", commonResponseValidations.toString());",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_NEAREST}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}}?number={{NEAREST_POINTS}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_NEAREST}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}}"
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "{{NEAREST_POINTS}}"
+										}
+									]
+								},
+								"description": "# Test Description\nValidates whether the API is returning N nearest points from an initial coordinate\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nWaypoints: Waypoint Names, Distances between Poinsts, Longitude and Latitude\n# Remarks\t\t\nMust be the FIRST REQUEST \\\nIf you want to increase or decrease the Nearest points, please change \"myNearestPoints\" variable on Pre-request Script"
+							},
+							"response": []
+						}
+					],
+					"description": "# Nearest folder summary\nThis folder groups Nearest service tests",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "64899d0b-a720-419f-8eca-9527d0a607e4",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "48e4520f-6da2-471b-8ac2-1719cec45dc9",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Route",
+					"item": [
+						{
+							"name": "TC_2_Route_Between_P0_and_P1_With_Steps",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"//Validates Response Time and Code ",
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"",
+											"//Validates Route Steps",
+											"eval(pm.environment.get(\"commonRouteStepsValidation\"))();",
+											"",
+											"//Validates Waypoints",
+											"eval(pm.environment.get(\"commonWayPointsValidation\"))();",
+											"",
+											"//Validates Inputs",
+											"eval(pm.environment.get(\"commomInputValidation\"))();",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											"var commonWayPointsValidation = () => {",
+											"    ",
+											"    let myWayPointsNumber = pm.response.json().waypoints.length;",
+											"    let assert = require('assert');",
+											"    let myJson = JSON.parse(responseBody);",
+											"    ",
+											"    pm.test(\"Body Must Have Waypoints (\" + myWayPointsNumber + \")\", function () {",
+											"        pm.expect(pm.response.json().waypoints.length).to.eq(myWayPointsNumber);",
+											"    });",
+											"    ",
+											"    pm.test(\"Distance Between Waypoints (\" + myWayPointsNumber +\") Must Be Greater Than 0\", function(){",
+											"        assert(myJson.routes[0].distance > 0);",
+											"    });",
+											"",
+											"};",
+											"",
+											"var commonRouteStepsValidation = () => {",
+											"    //[DOCUMENTATION] Validates Routes Steps Name, Distance, Duration and Driving side",
+											"    let myStepNumbers = pm.response.json().routes[0].legs[0].steps.length;",
+											"    pm.test(\"All Steps (\" + myStepNumbers + \") Must Contain Name, Distance, Duration and Driving Side\", function () {",
+											"    ",
+											"    for(i=0; i<myStepNumbers; i++){",
+											"        //Assertions",
+											"        //Name",
+											"        pm.expect(pm.response.json().routes[0].legs[0].steps[i].name).not.equal(null);",
+											"        //Distance",
+											"        pm.expect(pm.response.json().routes[0].legs[0].steps[i].distance).not.equal(null);",
+											"        //Duration",
+											"        pm.expect(pm.response.json().routes[0].legs[0].steps[i].duration).not.equal(null);",
+											"        //Driving Side",
+											"        if(i<myStepNumbers-1){",
+											"            pm.expect(pm.response.json().routes[0].legs[0].steps[i].driving_side).not.equal(null);    ",
+											"        }",
+											"    }",
+											"});",
+											"};",
+											"",
+											"var commomInputValidation = () => {",
+											"    //input Longitude Latitude",
+											"    let myJson = JSON.parse(responseBody)",
+											"    let assert = require('assert');",
+											"    var myWayPointsNumber = pm.response.json().waypoints.length;",
+											"    ",
+											"    pm.test(\"Body Longitude and Latitude Must Be Equal to Environment Inputs (\" + myWayPointsNumber +\")\", function (){",
+											"        let resLngLat = 0;",
+											"        let envLngLat = 0;",
+											"        ",
+											"        for(i=0; i < myWayPointsNumber; i++){",
+											"            envLngLat = postman.getEnvironmentVariable(\"longitudeP\"+i) + \",\" + postman.getEnvironmentVariable(\"latitudeP\"+i);",
+											"            resLngLat = myJson.waypoints[i].location[0] + \",\" + myJson.waypoints[i].location[1];  ",
+											"            assert(resLngLat == envLngLat);",
+											"            ",
+											"        }",
+											"    });",
+											"    ",
+											"    pm.test(\"Body Names Must Be Equal to Environment Inputs (\" + myWayPointsNumber +\")\", function (){",
+											"        let resName = \"\";",
+											"        let envName = \"\";",
+											"        ",
+											"        for(i=0;i<myWayPointsNumber;i++){",
+											"            envName = postman.getEnvironmentVariable(\"nameP\"+i);",
+											"            resName = myJson.waypoints[i].name;  ",
+											"            assert(resName == envName);",
+											"            ",
+											"        }",
+											"    });",
+											"    ",
+											"};",
+											"",
+											"pm.environment.set(\"commonRouteStepsValidation\", commonRouteStepsValidation.toString());",
+											"pm.environment.set(\"commonWayPointsValidation\", commonWayPointsValidation.toString());",
+											"pm.environment.set(\"commomInputValidation\", commomInputValidation.toString());",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_ROUTE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}}?steps=true",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_ROUTE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}}"
+									],
+									"query": [
+										{
+											"key": "steps",
+											"value": "true"
+										}
+									]
+								},
+								"description": "# Test Description\nValidates whether the API is returning Routes between coordinates and its steps\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Points\\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_3_Route_Between_P0_and_P1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"//Validates Response Time and Code ",
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"",
+											"//Validates Route Steps",
+											"eval(pm.environment.get(\"commonRouteStepsValidation\"))();",
+											"",
+											"//Validates Waypoints",
+											"eval(pm.environment.get(\"commonWayPointsValidation\"))();",
+											"",
+											"//Validates Inputs",
+											"eval(pm.environment.get(\"commomInputValidation\"))();",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_ROUTE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_ROUTE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}}"
+									]
+								},
+								"description": "# Test Description\nValidates whether the API is returning Routes between coordinates and its steps without steps\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nWaypoints: Waypoint Names, Distances between Points \\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_4_Route_Between_3_Or_More_Points_With_Steps",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"//Validates Response Time and Code ",
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"",
+											"//Validates Route Steps",
+											"eval(pm.environment.get(\"commonRouteStepsValidation\"))();",
+											"",
+											"//Validates Waypoints",
+											"eval(pm.environment.get(\"commonWayPointsValidation\"))();",
+											"",
+											"//Validates Inputs",
+											"eval(pm.environment.get(\"commomInputValidation\"))();",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_ROUTE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}?steps=true",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_ROUTE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}"
+									],
+									"query": [
+										{
+											"key": "steps",
+											"value": "true"
+										}
+									]
+								},
+								"description": "# Test Description\nValidates whether the API is returning Routes 3 or more between coordinates and its steps\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Points\\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs\n# Remarks\nTo add more routes please go to Pre-request Script tab and perform the following instructions: \\\n1 - Add environment variable using the following commands: \\\n\tpm.environment.set(\"longitudeP\"N,longitudeValue); \\\n\tpm.environment.set(\"latitudeP\"N,latitudeValue); \\\n2 - Add the new coordinates to the ENDpoint URL"
+							},
+							"response": []
+						}
+					],
+					"description": "# Route folder summary\nThis folder groups Route service tests",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "acf5cd23-dcbc-4251-ad33-022568e76042",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4999eca7-db8d-4866-a22a-8f2e247f0308",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Trip",
+					"item": [
+						{
+							"name": "TC_5_Trip_With_Steps",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"eval(pm.environment.get(\"commonTripWayPointsValidation\"))();",
+											"eval(pm.environment.get(\"commomInputValidation\"))();",
+											"eval(pm.environment.get(\"commonTripStepsValidation\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											"var commonTripWayPointsValidation = () => {",
+											"    ",
+											"    let myWayPointsNumber = pm.response.json().waypoints.length;",
+											"    let assert = require('assert');",
+											"    let myJson = JSON.parse(responseBody)",
+											"    ",
+											"    pm.test(\"Body Must Have Waypoints (\" + myWayPointsNumber + \")\", function () {",
+											"        pm.expect(pm.response.json().waypoints.length).to.eq(myWayPointsNumber);",
+											"    });",
+											"    ",
+											"    pm.test(\"Distance Between Waypoints (\" + myWayPointsNumber +\") Must Be Greater Than 0\", function(){",
+											"        assert(myJson.trips[0].distance > 0);",
+											"    });",
+											"",
+											"};",
+											"",
+											"var commonTripStepsValidation = () => {",
+											"    //[DOCUMENTATION] Validates Routes Steps Name, Distance, Duration and Driving side",
+											"    let myStepNumbers = pm.response.json().trips[0].legs[0].steps.length;",
+											"    pm.test(\"All Steps (\" + myStepNumbers + \") Must Contain Name, Distance, Duration and Driving Side\", function () {",
+											"    ",
+											"    for(i=0; i<myStepNumbers; i++){",
+											"        //Assertions",
+											"        //Name",
+											"        pm.expect(pm.response.json().trips[0].legs[0].steps[i].name).not.equal(null);",
+											"        //Distance",
+											"        pm.expect(pm.response.json().trips[0].legs[0].steps[i].distance).not.equal(null);",
+											"        //Duration",
+											"        pm.expect(pm.response.json().trips[0].legs[0].steps[i].duration).not.equal(null);",
+											"        //Driving Side",
+											"        if(i<myStepNumbers-1){",
+											"            pm.expect(pm.response.json().trips[0].legs[0].steps[i].driving_side).not.equal(null);    ",
+											"        }",
+											"    }",
+											"});",
+											"};",
+											"",
+											"pm.environment.set(\"commonTripStepsValidation\", commonTripStepsValidation.toString());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TRIP}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}?steps=true",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TRIP}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}"
+									],
+									"query": [
+										{
+											"key": "steps",
+											"value": "true"
+										}
+									]
+								},
+								"description": "# Test Description\nValidates whether the API is returning the aproximate better trip\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Points\\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_6_Trip_With_Steps_Source(First)_Destination(Last)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"eval(pm.environment.get(\"commonTripWayPointsValidation\"))();",
+											"eval(pm.environment.get(\"commonTripStepsValidation\"))();",
+											"eval(pm.environment.get(\"inputValidationSourceFirstDestinationLast\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											"var inputValidationSourceFirstDestinationLast = () => {",
+											"    //input Longitude Latitude",
+											"    let myJson = JSON.parse(responseBody);",
+											"    let assert = require('assert');",
+											"    var myWayPointsNumber = pm.response.json().waypoints.length;",
+											"    ",
+											"    pm.test(\"First Parameter Lng and Lat Must be the Trip Source\", function (){",
+											"        let resLngLat = myJson.waypoints[0].location[0] + \",\" + myJson.waypoints[0].location[1];",
+											"        let envLngLat = postman.getEnvironmentVariable(\"longitudeP1\") + \",\" + postman.getEnvironmentVariable(\"latitudeP1\");",
+											"            resLngLat =   ",
+											"            assert(resLngLat == envLngLat);",
+											"",
+											"    });",
+											"    ",
+											"    pm.test(\"First Parameter Name Must be the Trip Source\", function (){",
+											"        let resName = myJson.waypoints[0].name;",
+											"        let envName = postman.getEnvironmentVariable(\"nameP1\");",
+											"        assert(resName == envName);",
+											"",
+											"    });",
+											"    ",
+											"    pm.test(\"Last Parameter Lng and Lat Must be the Trip Destination\", function (){",
+											"        let resLngLat = myJson.waypoints[2].location[0] + \",\" + myJson.waypoints[2].location[1];",
+											"        let envLngLat = postman.getEnvironmentVariable(\"longitudeP2\") + \",\" + postman.getEnvironmentVariable(\"latitudeP2\");",
+											"            assert(resLngLat == envLngLat);",
+											"",
+											"    });",
+											"    ",
+											"    pm.test(\"Last Parameter Name Must be the Trip Destination\", function (){",
+											"        let resName = myJson.waypoints[2].name;",
+											"        let envName = postman.getEnvironmentVariable(\"nameP2\");",
+											"        assert(resName == envName);",
+											"",
+											"    });",
+											"    ",
+											"};",
+											"",
+											"",
+											"pm.environment.set(\"inputValidationSourceFirstDestinationLast\", inputValidationSourceFirstDestinationLast.toString());"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TRIP}}/{{SERVICE}}/{{longitudeP1}},{{latitudeP1}};{{longitudeP0}},{{latitudeP0}};{{longitudeP2}},{{latitudeP2}}?source=first&destination=last",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TRIP}}",
+										"{{SERVICE}}",
+										"{{longitudeP1}},{{latitudeP1}};{{longitudeP0}},{{latitudeP0}};{{longitudeP2}},{{latitudeP2}}"
+									],
+									"query": [
+										{
+											"key": "source",
+											"value": "first"
+										},
+										{
+											"key": "destination",
+											"value": "last"
+										}
+									]
+								},
+								"description": "# Test Description\nValidates whether the API is returning the aproximate better trip. It makes the first coordinate the source and makes the last coordinate the destination\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Poinsts, First Paramter to be the Source and Last Paramter to be destination\\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs"
+							},
+							"response": []
+						}
+					],
+					"description": "# Trip folder summary\nThis folder groups Tripe service tests",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d60f9291-fcb5-44e5-af35-8b775fe8842c",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "e1989dc8-d673-41bc-be32-69a8efdde465",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Table",
+					"item": [
+						{
+							"name": "TC_7_Table_1Source-1Destinatinations_Does_Not_Matter_How_Many_Inputs",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"//source",
+											"//Friedrichstraße                0",
+											"//Platz der Vereinten Nationen   1",
+											"//Torstraße                      2",
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"eval(pm.environment.get(\"validateSourceToDestination\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											"//Test Data",
+											"//Change the following variables in order to change the source(0 to 2) and destination (0 to 2)",
+											"//Friedrichstraße                0",
+											"//Platz der Vereinten Nationen   1",
+											"//Torstraße                      2",
+											"let myTableSourceNumber = 1;",
+											"let myTableDestinationNumber = 0;",
+											"",
+											"pm.environment.set(\"tableSourceNumber\",myTableSourceNumber);",
+											"pm.environment.set(\"tableDestinationNumber\",myTableDestinationNumber);",
+											"",
+											"",
+											"var validateSourceToDestination = () => {",
+											"    ",
+											"    pm.test(\"Duration Between Source and Destination Must Be Greater Than 0\", function () {",
+											"        let myDuration = pm.response.json().durations[0][0];",
+											"        pm.expect(myDuration).to.be.above(0);",
+											"    });",
+											"    ",
+											"    pm.test(\"Source Name, Longitude and Latitude Must Be According to Inputed Coordinates\", function () {",
+											"        ",
+											"        let tableSourceNumber = postman.getEnvironmentVariable(\"tableSourceNumber\");",
+											"        ",
+											"        let myEnvName = postman.getEnvironmentVariable(\"nameP\" + tableSourceNumber);",
+											"        let myEnvLng = postman.getEnvironmentVariable(\"longitudeP\" + tableSourceNumber);",
+											"        let myEnvLat = postman.getEnvironmentVariable(\"latitudeP\" + tableSourceNumber);",
+											"        ",
+											"        let myResName = pm.response.json().sources[0].name;",
+											"        let myResLng =  pm.response.json().sources[0].location[0];",
+											"        let myResLat =  pm.response.json().sources[0].location[1];",
+											"        ",
+											"        pm.expect(myResName).to.equal(myEnvName);",
+											"        pm.expect(myResLng.toString()).to.equal(myEnvLng);",
+											"        pm.expect(myResLat.toString()).to.equal(myEnvLat);",
+											"    });",
+											"    ",
+											"    pm.test(\"Destination Name, Longitude and Latitude Must Be According to Inputed Coordinates\", function () {",
+											"        ",
+											"        let tableDestinationNumber = postman.getEnvironmentVariable(\"tableDestinationNumber\");",
+											"        ",
+											"        let myEnvName = postman.getEnvironmentVariable(\"nameP\" + tableDestinationNumber);",
+											"        let myEnvLng = postman.getEnvironmentVariable(\"longitudeP\" + tableDestinationNumber);",
+											"        let myEnvLat = postman.getEnvironmentVariable(\"latitudeP\" + tableDestinationNumber);",
+											"        ",
+											"        let myResName = pm.response.json().destinations[0].name;",
+											"        let myResLng =  pm.response.json().destinations[0].location[0];",
+											"        let myResLat =  pm.response.json().destinations[0].location[1];",
+											"        ",
+											"        pm.expect(myResName).to.equal(myEnvName);",
+											"        pm.expect(myResLng.toString()).to.equal(myEnvLng);",
+											"        pm.expect(myResLat.toString()).to.equal(myEnvLat);",
+											"        ",
+											"    });",
+											"    ",
+											"};",
+											"",
+											"",
+											"pm.environment.set(\"validateSourceToDestination\", validateSourceToDestination.toString());",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TABLE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}?sources={{tableSourceNumber}}&destinations={{tableDestinationNumber}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TABLE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}"
+									],
+									"query": [
+										{
+											"key": "sources",
+											"value": "{{tableSourceNumber}}"
+										},
+										{
+											"key": "destinations",
+											"value": "{{tableDestinationNumber}}"
+										}
+									]
+								},
+								"description": "# Test Description\nValidates whether the API is returning the shortest time trip between coordinates. \nThis Test forces the definition of Source and Destination. See Remarks area to know how change the Source and Destination\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nSource and Destination: Duration Between Source and Destination\nInput: Name, Longitude and Latitude of Source and Destination according to inputs\n#Remarks \n1 - Test Data\nFriedrichstraße                0 \\\nPlatz der Vereinten Nationen   1 \\\nTorstraße                      2 \\\n2 - If you want to change the source (0, 1 or 2) and destination (0, 1 or 2) order, please go to Pre-reqeust Script tab and change the following variables \\\nmyTableSourceNumber = 1; \\\nmyTableDestinationNumber = 0;"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_8_Table_All_Sources_to_All_Destinatinations",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"",
+											"",
+											"//source",
+											"//Friedrichstraße                Source (0) Destination (0) Duration (0)",
+											"//Platz der Vereinten Nationen   Source (1) Destination (1) Duration (1)",
+											"//Torstraße                      Source (2) Destination (2) Duration (2)",
+											"",
+											"//First Test",
+											"//Duration from 0 to 0 must be 0         0",
+											"//Duration from 0 to 1 greater than 0    723.5",
+											"//Duration from 0 to 2 greater than 0    596.9",
+											"",
+											"//Duration from 1 to 0 greater than 0    579",
+											"//Duration from 1 to 1 must be 0         0",
+											"//Duration from 1 to 2 greater than 0    426.2",
+											"",
+											"//Duration from 2 to 0 greater than 0    579",
+											"//Duration from 2 to 1 greater than 0    426.2",
+											"//Duration from 2 to 2 must be 0         0",
+											"",
+											"eval(pm.environment.get(\"commonResponseValidations\"))();",
+											"",
+											"eval(pm.environment.get(\"validateMultipleSourcesAndDestinations\"))();",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											"//If you want to test more Coordinates, just add to the ENDPOINT URL",
+											"",
+											"//source",
+											"//Friedrichstraße                Source (0) Destination (0) Duration (0)",
+											"//Platz der Vereinten Nationen   Source (1) Destination (1) Duration (1)",
+											"//Torstraße                      Source (2) Destination (2) Duration (2)",
+											"",
+											"//First Test",
+											"//Duration from 0 to 0 must be 0         0",
+											"//Duration from 0 to 1 greater than 0    723.5",
+											"//Duration from 0 to 2 greater than 0    596.9",
+											"",
+											"//Duration from 1 to 0 greater than 0    579",
+											"//Duration from 1 to 1 must be 0         0",
+											"//Duration from 1 to 2 greater than 0    426.2",
+											"",
+											"//Duration from 2 to 0 greater than 0    579",
+											"//Duration from 2 to 1 greater than 0    426.2",
+											"//Duration from 2 to 2 must be 0         0",
+											"",
+											"//Test Data",
+											"//Change the following variables in order to change the source(0 to 2) and destination (0 to 2)",
+											"//Friedrichstraße                0",
+											"//Platz der Vereinten Nationen   1",
+											"//Torstraße                      2",
+											"",
+											"var validateMultipleSourcesAndDestinations = () => {",
+											"    ",
+											"    let myJson = JSON.parse(responseBody);",
+											"    let assert = require('assert');",
+											"    ",
+											"    let mySourcesNumber = pm.response.json().sources.length;",
+											"    let myDestinationsNumber = pm.response.json().destinations.length;",
+											" ",
+											"",
+											"    ",
+											"    pm.test(\"Duration Between Different Points Must Be Greater Than 0\", function () {",
+											"        let myDuration = 0; ",
+											"        for(i=0;i<mySourcesNumber;i++){",
+											"            for(j=0;j<myDestinationsNumber;j++){",
+											"                if(i!=j){",
+											"                    myDuration = pm.response.json().durations[i][j];",
+											"                    console.log(\"MY DURATION ====\" + myDuration);",
+											"                    pm.expect(myDuration).to.be.above(0);",
+											"                }",
+											"            }",
+											"        }",
+											"    });",
+											"    ",
+											"    pm.test(\"Duration Between Same Points Must Be 0\", function () {",
+											"        let myDuration = 0; ",
+											"        for(i=0;i<mySourcesNumber;i++){",
+											"            for(j=0;j<myDestinationsNumber;j++){",
+											"                if(i==j){",
+											"                    myDuration = pm.response.json().durations[i][j];",
+											"                    console.log(\"MY DURATION ====\" + myDuration);",
+											"                    pm.expect(myDuration).to.equal(0);",
+											"                }",
+											"            }",
+											"        }",
+											"    });",
+											"    ",
+											"    ",
+											"    pm.test(\"All Sources Must Have Name, Longitude and Latitude\", function () {",
+											"        ",
+											"        for(i=0;i<mySourcesNumber;i++){",
+											"            ",
+											"            mySourcesName = pm.response.json().sources[i].name;",
+											"            mySourcesLng = pm.response.json().sources[i].location[0];",
+											"            mySourcesLat = pm.response.json().sources[i].location[1];",
+											"            ",
+											"            pm.expect(mySourcesName).not.equal(null);",
+											"            pm.expect(mySourcesLng).not.equal(null);",
+											"            pm.expect(mySourcesLat).not.equal(null);",
+											"        }",
+											"        ",
+											"    });",
+											"    ",
+											"    pm.test(\"All Destinations Must Have Name, Longitude and Latitude\", function () {",
+											"        ",
+											"        for(i=0;i<myDestinationsNumber;i++){",
+											"            ",
+											"            myDestinationName = pm.response.json().destinations[i].name;",
+											"            myDestinationLng = pm.response.json().destinations[i].location[0];",
+											"            myDestinationLat = pm.response.json().destinations[i].location[1];",
+											"            ",
+											"            pm.expect(myDestinationName).not.equal(null);",
+											"            pm.expect(myDestinationLng).not.equal(null);",
+											"            pm.expect(myDestinationLat).not.equal(null);",
+											"        }",
+											"        ",
+											"    });",
+											"    ",
+											"    ",
+											"};",
+											"",
+											"",
+											"pm.environment.set(\"validateMultipleSourcesAndDestinations\", validateMultipleSourcesAndDestinations.toString());",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TABLE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TABLE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}"
+									]
+								},
+								"description": "# Test Description\nThis Test validates the creation of routes between all points\n\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nDuration: Duration between Different Points, Duration between Same Points \\\nSource: All sources Name, Longitude and Latitude\nDestination: All sources Name, Longitude and Latitude \n\n#Remarks \n1 - If you want to test more Coordinates, just add to the ENDPOINT URL \\ \n2 - Test Data \\\nFriedrichstraße                (0) \\\nPlatz der Vereinten Nationen   (1) \\\nTorstraße                      (2) \\\n\nDuration from 0 to 0 = 0 \\\nDuration from 0 to 1 = 723.5 \\\nDuration from 0 to 2 = 596.9 \\\n\\\nDuration from 1 to 0 = 579 \\\nDuration from 1 to 1 = 0 \\\nDuration from 1 to 2 = 426.2\\\n\\\nDuration from 2 to 0 = 579 \\\nDuration from 2 to 1 = 426.2 \\\nDuration from 2 to 2 = 0"
+							},
+							"response": []
+						}
+					],
+					"description": "# Nearest Table summary\nThis folder groups Table service tests",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b2cfa2f6-33f5-4594-8cdc-a4d64650cdaa",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba9cd8f4-8163-43d1-9abc-87c73e646c46",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"description": "# Positive Tests folder summary\nThis folder grous Positive Tests for Nearest, Rout, Trip and Table services",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fb4aef2e-412a-4931-a166-b96672e99e71",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d41e884c-2c35-41b1-8d09-a4009355d158",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Negative Tests",
+			"item": [
+				{
+					"name": "Nearest",
+					"item": [
+						{
+							"name": "TC_1_Nearest_Invalid_Coordinates",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											"var commonInvalidCoordinates = () => {",
+											"    ",
+											"    pm.test(\"Status Code Must Be 400\", function () {",
+											"        pm.response.to.have.status(400);",
+											"    });",
+											"};",
+											"",
+											"pm.environment.set(\"commonInvalidCoordinates\", commonInvalidCoordinates.toString());",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_NEAREST}}/{{SERVICE}}/{{invalidLongitudeP0}},{{invalidLatitudeP0}}?number={{NEAREST_POINTS}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_NEAREST}}",
+										"{{SERVICE}}",
+										"{{invalidLongitudeP0}},{{invalidLatitudeP0}}"
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "{{NEAREST_POINTS}}"
+										}
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_2_Nearest_Invalid_Coordinates_Number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
+										"exec": [
+											"pm.test(\"Status Code Must Be 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"    "
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_NEAREST}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}}?number=-1",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_NEAREST}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}}"
+									],
+									"query": [
+										{
+											"key": "number",
+											"value": "-1"
+										}
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Route",
+					"item": [
+						{
+							"name": "TC_3_Route_Invalid_Coordinate",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_ROUTE}}/{{SERVICE}}/{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_ROUTE}}",
+										"{{SERVICE}}",
+										"{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}"
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_4_Route_With_Only_One_Longitude_Latitude",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_ROUTE}}/{{SERVICE}}/{{longitudeP1}},{{latitudeP1}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_ROUTE}}",
+										"{{SERVICE}}",
+										"{{longitudeP1}},{{latitudeP1}}"
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_5_No_Route_Found_Between_Coordinates",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"pm.test(\"Body Must Contain Message: No route found\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"No route found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_ROUTE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_ROUTE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}"
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Trip",
+					"item": [
+						{
+							"name": "TC_6_Trip_Invalid_Coordinate",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TRIP}}/{{SERVICE}}/{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TRIP}}",
+										"{{SERVICE}}",
+										"{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}"
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_7_Trip_With_Only_One_Longitude_Latitude",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TRIP}}/{{SERVICE}}/{{longitudeP1}},{{latitudeP1}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TRIP}}",
+										"{{SERVICE}}",
+										"{{longitudeP1}},{{latitudeP1}}"
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_8_No_Route_Found_Between_Coordinates(Trip)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"pm.test(\"Body Must Contain Message: No route found\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"No route found\");",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TRIP}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TRIP}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}"
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Table",
+					"item": [
+						{
+							"name": "TC_9_Table_Invalid_Sources_Number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"pm.test(\"Status Code Must Be 400\", function () {",
+											"        pm.response.to.have.status(400);",
+											"    });"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TABLE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}?sources=20",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TABLE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}"
+									],
+									"query": [
+										{
+											"key": "sources",
+											"value": "20"
+										}
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_10_Table_Destinations_Number",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"pm.test(\"Status Code Must Be 400\", function () {",
+											"        pm.response.to.have.status(400);",
+											"    });"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TABLE}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}?destinations=20",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TABLE}}",
+										"{{SERVICE}}",
+										"{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}};{{longitudeP2}},{{latitudeP2}}"
+									],
+									"query": [
+										{
+											"key": "destinations",
+											"value": "20"
+										}
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						},
+						{
+							"name": "TC_11_Table_Invalid_Coordinates",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
+										"exec": [
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "3538482e-f12b-494a-900c-480b1c6b6562",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/{{URI_TABLE}}/{{SERVICE}}/{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"{{URI_TABLE}}",
+										"{{SERVICE}}",
+										"{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}"
+									]
+								},
+								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"description": "# Negative Tests folder summary\nThis folder grous Negative Tests for Nearest, Rout, Trip and Table services\n",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b95b7b90-df33-4720-a4e9-438b5c59d618",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7d7a386d-e9be-44a7-9a37-3d80f61dae5d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "15262005-45f8-46a3-aab2-b85f37dd9496",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "23ab3bb7-26a9-4289-966c-37ca6423fa1b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
