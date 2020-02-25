@@ -1156,12 +1156,21 @@
 										"exec": [
 											"var commonInvalidCoordinates = () => {",
 											"    ",
+											"    let myMaxRespTime = parseInt(postman.getEnvironmentVariable(\"MAX_RESPONSE_TIME\"));",
+											"    let myRespCodeOk = postman.getEnvironmentVariable(\"RESPONSE_CODE_OK\");",
+											"",
+											"    pm.test(\"Response Time Must Be Less Than \" + myMaxRespTime, function () {",
+											"        pm.expect(pm.response.responseTime).to.be.below(myMaxRespTime);",
+											"    });",
+											"    ",
 											"    pm.test(\"Status Code Must Be 400\", function () {",
 											"        pm.response.to.have.status(400);",
 											"    });",
 											"};",
 											"",
 											"pm.environment.set(\"commonInvalidCoordinates\", commonInvalidCoordinates.toString());",
+											"",
+											"",
 											""
 										],
 										"type": "text/javascript"
@@ -1207,7 +1216,7 @@
 										}
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid coordinates\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						},
@@ -1219,10 +1228,7 @@
 									"script": {
 										"id": "8a659763-8be2-451d-bce8-e992de6838ad",
 										"exec": [
-											"pm.test(\"Status Code Must Be 400\", function () {",
-											"    pm.response.to.have.status(400);",
-											"});",
-											"    "
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
 										],
 										"type": "text/javascript"
 									}
@@ -1261,7 +1267,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/{{URI_NEAREST}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}}?number=-1",
+									"raw": "{{BASE_URL}}/{{URI_NEAREST}}/{{SERVICE}}/{{longitudeP0}},{{latitudeP0}}?number=0",
 									"host": [
 										"{{BASE_URL}}"
 									],
@@ -1273,11 +1279,11 @@
 									"query": [
 										{
 											"key": "number",
-											"value": "-1"
+											"value": "0"
 										}
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid coordinates number\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						}
@@ -1345,7 +1351,7 @@
 										"{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}"
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid coordinates\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						},
@@ -1406,12 +1412,12 @@
 										"{{longitudeP1}},{{latitudeP1}}"
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid coordinates\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						},
 						{
-							"name": "TC_5_No_Route_Found_Between_Coordinates",
+							"name": "TC_5_No_Route_Found_Between_Coordinates (FAILING)",
 							"event": [
 								{
 									"listen": "test",
@@ -1469,7 +1475,7 @@
 										"{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}"
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when API is not able to find routes between coordinates\n\n# BUG \nRoute is retrieving route between two near addresses when it is informed overseas route. \\\nRoute 0 = 13.388798,52.517033 (Friedrichstraße - Berlin - Deustchland) \\\nOverseas route = -45.88694,-23.17944 (Jardin Bela Vista - Sao Paulo - Brasil) \\\nENDPOINT = http://192.168.99.100:5000/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944 \\\nError is happening on latest OSRM version. ERror is not happening on OSRM DEMO server. Please try: \\ https://router.project-osrm.org/route/v1/driving/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944\n\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						}
@@ -1537,7 +1543,7 @@
 										"{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}"
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid coordinates\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						},
@@ -1598,12 +1604,12 @@
 										"{{longitudeP1}},{{latitudeP1}}"
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends only one coordinate\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						},
 						{
-							"name": "TC_8_No_Route_Found_Between_Coordinates(Trip)",
+							"name": "TC_8_Trip_No_Route_Found_Between_Coordinates(Trip)",
 							"event": [
 								{
 									"listen": "test",
@@ -1661,7 +1667,7 @@
 										"{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}"
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when API is not able to find routes between coordinates\n\n# BUG \nRoute is retrieving route between two near addresses when it is informed overseas route. \\\nRoute 0 = 13.388798,52.517033 (Friedrichstraße - Berlin - Deustchland) \\\nOverseas route = -45.88694,-23.17944 (Jardin Bela Vista - Sao Paulo - Brasil) \\\nENDPOINT = http://192.168.99.100:5000/trip/v1/driving/13.388798,52.517033;-45.88694,-23.17944 \\\nError is happening on latest OSRM version. ERror is not happening on OSRM DEMO server. Please try: \\ https://router.project-osrm.org/trip/v1/driving/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						}
@@ -1680,9 +1686,7 @@
 									"script": {
 										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
 										"exec": [
-											"pm.test(\"Status Code Must Be 400\", function () {",
-											"        pm.response.to.have.status(400);",
-											"    });"
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
 										],
 										"type": "text/javascript"
 									}
@@ -1737,7 +1741,7 @@
 										}
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid source number\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						},
@@ -1749,9 +1753,7 @@
 									"script": {
 										"id": "f181c2ac-ab45-4d7a-a76f-dc2c4960a598",
 										"exec": [
-											"pm.test(\"Status Code Must Be 400\", function () {",
-											"        pm.response.to.have.status(400);",
-											"    });"
+											"eval(pm.environment.get(\"commonInvalidCoordinates\"))();"
 										],
 										"type": "text/javascript"
 									}
@@ -1806,7 +1808,7 @@
 										}
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid destination number\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						},
@@ -1867,7 +1869,7 @@
 										"{{invalidLongitudeP0}},{{invalidLatitudeP0}};{{longitudeP1}},{{latitudeP1}}"
 									]
 								},
-								"description": "[Documentation]  Test Description: Performs Route between 2 points.\\n\r\n    ...              Test Objective: To validate whether Response is 200, Response has coordinates and Response has\r\n    ...              Distance\r\n\r\n[Tags]  positive"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when POSTMAN sends invalid coordinates\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						}
