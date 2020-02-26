@@ -52,13 +52,15 @@ Please try: https://router.project-osrm.org/trip/v1/driving/13.388798,52.517033;
 # Answer for Question 2
 Question: Describe how the tests you have written could be integrated in a fully automated CI/CD pipeline
 
-Suggested enviornment: git, newman and Jenkins
+Suggested enviornment: git, postman,  newman, Jenkins and Virtual Machines
 The Collections and Environment were uploaded to Github: https://github.com/dave-dalcin/osrm-tests
-Create a job on Jenkins or any other Job orchestration server to download json files from git and run the following newman command line:
+The Jenkins host should have access to any AWS or Docker machine with Chama Application compiled from Master Branch;
+Make sure that QA-Driving.postman_environment.json is pointing to Chama Application ENDPOINT running on virtual machine ;
+Create a job on Jenkins or any other Job orchestration server to download json files from gitand run the following newman command line:
 
 newman run OSRM_Testing.postman_collection.json -e QA-Driving.postman_environment.json
 
-Newman will perform the tests and output the results 
+Newman will perform the tests and output the results
 
 
 

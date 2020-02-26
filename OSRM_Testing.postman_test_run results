@@ -1,0 +1,936 @@
+{
+	"id": "3e69f95a-282f-4b9f-8fb7-6785cb900ff0",
+	"name": "OSRM_Testing",
+	"timestamp": "2020-02-26T00:00:00.662Z",
+	"collection_id": "09459b58-b19b-46fb-90dc-bd8ad308f6ff",
+	"folder_id": 0,
+	"environment_id": "f8567d31-40f6-4653-8acb-7db02b088b22",
+	"totalPass": 72,
+	"totalFail": 2,
+	"results": [
+		{
+			"id": "dbb8816a-8215-4445-b475-94dc47fcdc17",
+			"name": "TC_1_Nearest_N_Points",
+			"url": "192.168.99.100:5000/nearest/v1/driving/13.388798,52.517033?number=3",
+			"time": 10,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"All Waypoints Must Have Name": true,
+				"All Waypoints Must Have Distance": true,
+				"All Waypoints Must Have Longitude and Latitude": true,
+				"All Waypoints Must Distance Bigger than the Previous One": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Waypoints Must Have Name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Waypoints Must Have Distance": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Waypoints Must Have Longitude and Latitude": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Waypoints Must Distance Bigger than the Previous One": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				10
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"All Waypoints Must Have Name": true,
+					"All Waypoints Must Have Distance": true,
+					"All Waypoints Must Have Longitude and Latitude": true,
+					"All Waypoints Must Distance Bigger than the Previous One": true
+				}
+			]
+		},
+		{
+			"id": "80af1b08-286e-40da-8882-7c4594dcdba7",
+			"name": "TC_2_Route_Between_P0_and_P1_With_Steps",
+			"url": "192.168.99.100:5000/route/v1/driving/13.388798,52.517033;13.428554,52.523239?steps=true",
+			"time": 42,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": true,
+				"Body Must Have Waypoints (2)": true,
+				"Distance Between Waypoints (2) Must Be Greater Than 0": true,
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (2)": true,
+				"Body Names Must Be Equal to Environment Inputs (2)": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Must Have Waypoints (2)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Distance Between Waypoints (2) Must Be Greater Than 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (2)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Names Must Be Equal to Environment Inputs (2)": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				42
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": true,
+					"Body Must Have Waypoints (2)": true,
+					"Distance Between Waypoints (2) Must Be Greater Than 0": true,
+					"Body Longitude and Latitude Must Be Equal to Environment Inputs (2)": true,
+					"Body Names Must Be Equal to Environment Inputs (2)": true
+				}
+			]
+		},
+		{
+			"id": "bcf4d28d-0d20-49b1-8ec2-1daf1cce7c4f",
+			"name": "TC_3_Route_Between_P0_and_P1",
+			"url": "192.168.99.100:5000/route/v1/driving/13.388798,52.517033;13.428554,52.523239",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"All Steps (0) Must Contain Name, Distance, Duration and Driving Side": true,
+				"Body Must Have Waypoints (2)": true,
+				"Distance Between Waypoints (2) Must Be Greater Than 0": true,
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (2)": true,
+				"Body Names Must Be Equal to Environment Inputs (2)": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Steps (0) Must Contain Name, Distance, Duration and Driving Side": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Must Have Waypoints (2)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Distance Between Waypoints (2) Must Be Greater Than 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (2)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Names Must Be Equal to Environment Inputs (2)": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"All Steps (0) Must Contain Name, Distance, Duration and Driving Side": true,
+					"Body Must Have Waypoints (2)": true,
+					"Distance Between Waypoints (2) Must Be Greater Than 0": true,
+					"Body Longitude and Latitude Must Be Equal to Environment Inputs (2)": true,
+					"Body Names Must Be Equal to Environment Inputs (2)": true
+				}
+			]
+		},
+		{
+			"id": "e35c4da3-1e70-4458-b72e-aaa9f22cca74",
+			"name": "TC_4_Route_Between_3_Or_More_Points_With_Steps",
+			"url": "192.168.99.100:5000/route/v1/driving/13.388798,52.517033;13.428554,52.523239;13.397631,52.529432?steps=true",
+			"time": 37,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": true,
+				"Body Must Have Waypoints (3)": true,
+				"Distance Between Waypoints (3) Must Be Greater Than 0": true,
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (3)": true,
+				"Body Names Must Be Equal to Environment Inputs (3)": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Must Have Waypoints (3)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Distance Between Waypoints (3) Must Be Greater Than 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (3)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Names Must Be Equal to Environment Inputs (3)": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				37
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": true,
+					"Body Must Have Waypoints (3)": true,
+					"Distance Between Waypoints (3) Must Be Greater Than 0": true,
+					"Body Longitude and Latitude Must Be Equal to Environment Inputs (3)": true,
+					"Body Names Must Be Equal to Environment Inputs (3)": true
+				}
+			]
+		},
+		{
+			"id": "5d592650-b210-47ab-bf13-0b00bb87173b",
+			"name": "TC_5_Trip_With_Steps",
+			"url": "192.168.99.100:5000/trip/v1/driving/13.388798,52.517033;13.428554,52.523239;13.397631,52.529432?steps=true",
+			"time": 46,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"Body Must Have Waypoints (3)": true,
+				"Distance Between Waypoints (3) Must Be Greater Than 0": true,
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (3)": true,
+				"Body Names Must Be Equal to Environment Inputs (3)": true,
+				"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Must Have Waypoints (3)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Distance Between Waypoints (3) Must Be Greater Than 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Longitude and Latitude Must Be Equal to Environment Inputs (3)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Names Must Be Equal to Environment Inputs (3)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				46
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"Body Must Have Waypoints (3)": true,
+					"Distance Between Waypoints (3) Must Be Greater Than 0": true,
+					"Body Longitude and Latitude Must Be Equal to Environment Inputs (3)": true,
+					"Body Names Must Be Equal to Environment Inputs (3)": true,
+					"All Steps (12) Must Contain Name, Distance, Duration and Driving Side": true
+				}
+			]
+		},
+		{
+			"id": "eac1964a-59d8-4011-974c-d95097256faf",
+			"name": "TC_6_Trip_With_Steps_Source(First)_Destination(Last)",
+			"url": "192.168.99.100:5000/trip/v1/driving/13.428554,52.523239;13.388798,52.517033;13.397631,52.529432?source=first&destination=last",
+			"time": 22,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"Body Must Have Waypoints (3)": true,
+				"Distance Between Waypoints (3) Must Be Greater Than 0": true,
+				"All Steps (0) Must Contain Name, Distance, Duration and Driving Side": true,
+				"First Parameter Lng and Lat Must be the Trip Source": true,
+				"First Parameter Name Must be the Trip Source": true,
+				"Last Parameter Lng and Lat Must be the Trip Destination": true,
+				"Last Parameter Name Must be the Trip Destination": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body Must Have Waypoints (3)": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Distance Between Waypoints (3) Must Be Greater Than 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Steps (0) Must Contain Name, Distance, Duration and Driving Side": {
+					"pass": 1,
+					"fail": 0
+				},
+				"First Parameter Lng and Lat Must be the Trip Source": {
+					"pass": 1,
+					"fail": 0
+				},
+				"First Parameter Name Must be the Trip Source": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Last Parameter Lng and Lat Must be the Trip Destination": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Last Parameter Name Must be the Trip Destination": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				22
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"Body Must Have Waypoints (3)": true,
+					"Distance Between Waypoints (3) Must Be Greater Than 0": true,
+					"All Steps (0) Must Contain Name, Distance, Duration and Driving Side": true,
+					"First Parameter Lng and Lat Must be the Trip Source": true,
+					"First Parameter Name Must be the Trip Source": true,
+					"Last Parameter Lng and Lat Must be the Trip Destination": true,
+					"Last Parameter Name Must be the Trip Destination": true
+				}
+			]
+		},
+		{
+			"id": "e9dfea35-ffda-446e-b9e4-c201c3640744",
+			"name": "TC_7_Table_1Source-1Destinatinations_Does_Not_Matter_How_Many_Inputs",
+			"url": "192.168.99.100:5000/table/v1/driving/13.388798,52.517033;13.428554,52.523239;13.397631,52.529432?sources=1&destinations=0",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"Duration Between Source and Destination Must Be Greater Than 0": true,
+				"Source Name, Longitude and Latitude Must Be According to Inputed Coordinates": true,
+				"Destination Name, Longitude and Latitude Must Be According to Inputed Coordinates": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Duration Between Source and Destination Must Be Greater Than 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Source Name, Longitude and Latitude Must Be According to Inputed Coordinates": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Destination Name, Longitude and Latitude Must Be According to Inputed Coordinates": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"Duration Between Source and Destination Must Be Greater Than 0": true,
+					"Source Name, Longitude and Latitude Must Be According to Inputed Coordinates": true,
+					"Destination Name, Longitude and Latitude Must Be According to Inputed Coordinates": true
+				}
+			]
+		},
+		{
+			"id": "5e0f20b3-da32-410a-8ffc-eab7efed46f2",
+			"name": "TC_8_Table_All_Sources_to_All_Destinatinations",
+			"url": "192.168.99.100:5000/table/v1/driving/13.388798,52.517033;13.428554,52.523239;13.397631,52.529432",
+			"time": 38,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 200": true,
+				"Duration Between Different Points Must Be Greater Than 0": true,
+				"Duration Between Same Points Must Be 0": true,
+				"All Sources Must Have Name, Longitude and Latitude": true,
+				"All Destinations Must Have Name, Longitude and Latitude": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Duration Between Different Points Must Be Greater Than 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Duration Between Same Points Must Be 0": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Sources Must Have Name, Longitude and Latitude": {
+					"pass": 1,
+					"fail": 0
+				},
+				"All Destinations Must Have Name, Longitude and Latitude": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				38
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 200": true,
+					"Duration Between Different Points Must Be Greater Than 0": true,
+					"Duration Between Same Points Must Be 0": true,
+					"All Sources Must Have Name, Longitude and Latitude": true,
+					"All Destinations Must Have Name, Longitude and Latitude": true
+				}
+			]
+		},
+		{
+			"id": "ca22f2c7-196d-48f2-a5e2-537454bc965f",
+			"name": "TC_1_Nearest_Invalid_Coordinates",
+			"url": "192.168.99.100:5000/nearest/v1/driving/-1.334,123.12?number=3",
+			"time": 12,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "dd01d732-c92d-4b3e-89f0-65dddb335ce1",
+			"name": "TC_2_Nearest_Invalid_Coordinates_Number",
+			"url": "192.168.99.100:5000/nearest/v1/driving/13.388798,52.517033?number=0",
+			"time": 15,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "9af68c66-1ad1-4346-befa-885df7f1a830",
+			"name": "TC_3_Route_Invalid_Coordinate",
+			"url": "192.168.99.100:5000/route/v1/driving/-1.334,123.12;13.428554,52.523239",
+			"time": 17,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "8c98ab77-f706-4c08-8b7e-f84854268f5e",
+			"name": "TC_4_Route_With_Only_One_Longitude_Latitude",
+			"url": "192.168.99.100:5000/route/v1/driving/13.428554,52.523239",
+			"time": 10,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				10
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "cc363e34-ab5c-485f-ac18-7f97342bdfd6",
+			"name": "TC_5_No_Route_Found_Between_Coordinates (FAILING)",
+			"url": "192.168.99.100:5000/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944",
+			"time": 11,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body Must Contain Message: No route found": false
+			},
+			"testPassFailCounts": {
+				"Body Must Contain Message: No route found": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				11
+			],
+			"allTests": [
+				{
+					"Body Must Contain Message: No route found": false
+				}
+			]
+		},
+		{
+			"id": "8f1f9fb5-a828-461e-b906-994a8804a6ae",
+			"name": "TC_6_Trip_Invalid_Coordinate",
+			"url": "192.168.99.100:5000/trip/v1/driving/-1.334,123.12;13.428554,52.523239",
+			"time": 9,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "eaf4ae93-c7ab-4988-bc02-cf2e7baddad8",
+			"name": "TC_7_Trip_With_Only_One_Longitude_Latitude",
+			"url": "192.168.99.100:5000/trip/v1/driving/13.428554,52.523239",
+			"time": 8,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				8
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "339de97d-9cd5-4eb5-ae25-307ffd04da97",
+			"name": "TC_8_Trip_No_Route_Found_Between_Coordinates(Trip)",
+			"url": "192.168.99.100:5000/trip/v1/driving/13.388798,52.517033;-45.88694,-23.17944",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Body Must Contain Message: No route found": false
+			},
+			"testPassFailCounts": {
+				"Body Must Contain Message: No route found": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Body Must Contain Message: No route found": false
+				}
+			]
+		},
+		{
+			"id": "aad6c0fd-9029-40bc-b224-29e1613552c2",
+			"name": "TC_9_Table_Invalid_Sources_Number",
+			"url": "192.168.99.100:5000/table/v1/driving/13.388798,52.517033;13.428554,52.523239;13.397631,52.529432?sources=20",
+			"time": 14,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "5335bf07-0d88-4186-8a88-3bbc66033ff8",
+			"name": "TC_10_Table_Destinations_Number",
+			"url": "192.168.99.100:5000/table/v1/driving/13.388798,52.517033;13.428554,52.523239;13.397631,52.529432?destinations=20",
+			"time": 7,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		},
+		{
+			"id": "0f43b4bb-f490-4c78-9309-daccf4c8127f",
+			"name": "TC_11_Table_Invalid_Coordinates",
+			"url": "192.168.99.100:5000/table/v1/driving/-1.334,123.12;13.428554,52.523239",
+			"time": 9,
+			"responseCode": {
+				"code": 400,
+				"name": "Bad Request"
+			},
+			"tests": {
+				"Response Time Must Be Less Than 500": true,
+				"Status Code Must Be 400": true
+			},
+			"testPassFailCounts": {
+				"Response Time Must Be Less Than 500": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Status Code Must Be 400": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"Response Time Must Be Less Than 500": true,
+					"Status Code Must Be 400": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"collection": {
+		"requests": [
+			{
+				"id": "dbb8816a-8215-4445-b475-94dc47fcdc17",
+				"method": "GET"
+			},
+			{
+				"id": "80af1b08-286e-40da-8882-7c4594dcdba7",
+				"method": "GET"
+			},
+			{
+				"id": "bcf4d28d-0d20-49b1-8ec2-1daf1cce7c4f",
+				"method": "GET"
+			},
+			{
+				"id": "e35c4da3-1e70-4458-b72e-aaa9f22cca74",
+				"method": "GET"
+			},
+			{
+				"id": "5d592650-b210-47ab-bf13-0b00bb87173b",
+				"method": "GET"
+			},
+			{
+				"id": "eac1964a-59d8-4011-974c-d95097256faf",
+				"method": "GET"
+			},
+			{
+				"id": "e9dfea35-ffda-446e-b9e4-c201c3640744",
+				"method": "GET"
+			},
+			{
+				"id": "5e0f20b3-da32-410a-8ffc-eab7efed46f2",
+				"method": "GET"
+			},
+			{
+				"id": "ca22f2c7-196d-48f2-a5e2-537454bc965f",
+				"method": "GET"
+			},
+			{
+				"id": "dd01d732-c92d-4b3e-89f0-65dddb335ce1",
+				"method": "GET"
+			},
+			{
+				"id": "9af68c66-1ad1-4346-befa-885df7f1a830",
+				"method": "GET"
+			},
+			{
+				"id": "8c98ab77-f706-4c08-8b7e-f84854268f5e",
+				"method": "GET"
+			},
+			{
+				"id": "cc363e34-ab5c-485f-ac18-7f97342bdfd6",
+				"method": "GET"
+			},
+			{
+				"id": "8f1f9fb5-a828-461e-b906-994a8804a6ae",
+				"method": "GET"
+			},
+			{
+				"id": "eaf4ae93-c7ab-4988-bc02-cf2e7baddad8",
+				"method": "GET"
+			},
+			{
+				"id": "339de97d-9cd5-4eb5-ae25-307ffd04da97",
+				"method": "GET"
+			},
+			{
+				"id": "aad6c0fd-9029-40bc-b224-29e1613552c2",
+				"method": "GET"
+			},
+			{
+				"id": "5335bf07-0d88-4186-8a88-3bbc66033ff8",
+				"method": "GET"
+			},
+			{
+				"id": "0f43b4bb-f490-4c78-9309-daccf4c8127f",
+				"method": "GET"
+			}
+		]
+	}
+}
