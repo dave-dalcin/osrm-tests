@@ -417,9 +417,6 @@
 											"",
 											"//Validates Waypoints",
 											"eval(pm.environment.get(\"commonWayPointsValidation\"))();",
-											"",
-											"//Validates Inputs",
-											"eval(pm.environment.get(\"commomInputValidation\"))();",
 											""
 										],
 										"type": "text/javascript"
@@ -430,7 +427,11 @@
 									"script": {
 										"id": "d2b57f84-906a-4559-be40-548d90ae6a1a",
 										"exec": [
-											""
+											"//pm.environment.set(\"longitudeP\"+N,longitudeValue); \r",
+											"//pm.environment.set(\"latitudeP\"+N,latitudeValue); \r",
+											"\r",
+											"//pm.environment.set(\"longitudeP3\",\"13.427651\"); \r",
+											"//pm.environment.set(\"latitudeP3\",\"52.518392\"); "
 										],
 										"type": "text/javascript"
 									}
@@ -475,7 +476,7 @@
 										}
 									]
 								},
-								"description": "# Test Description\nValidates whether the API is returning Routes 3 or more between coordinates and its steps\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Points\\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs\n# Remarks\nTo add more routes please go to Pre-request Script tab and perform the following instructions: \\\n1 - Add environment variable using the following commands: \\\n\tpm.environment.set(\"longitudeP\"N,longitudeValue); \\\n\tpm.environment.set(\"latitudeP\"N,latitudeValue); \\\n2 - Add the new coordinates to the ENDpoint URL"
+								"description": "# Test Description\nValidates whether the API is returning Routes 3 or more between coordinates and its steps\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Points\\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs\n# Remarks\nTo add more routes please go to Pre-request Script tab and perform the following instructions: \\\n1 - Add environment variable using the following commands: \\\n\tpm.environment.set(\"longitudeP\"+N,longitudeValue); \\\n\tpm.environment.set(\"latitudeP\"+N,latitudeValue); \\\n2 - Add the new coordinates to the ENDpoint URL"
 							},
 							"response": []
 						}
@@ -639,13 +640,17 @@
 										"exec": [
 											"var inputValidationSourceFirstDestinationLast = () => {",
 											"    //input Longitude Latitude",
+											"    let mySource = 2;",
+											"    let myDestination = 1; ",
+											"",
+											"    ",
 											"    let myJson = JSON.parse(responseBody);",
 											"    let assert = require('assert');",
 											"    var myWayPointsNumber = pm.response.json().waypoints.length;",
 											"    ",
 											"    pm.test(\"First Parameter Lng and Lat Must be the Trip Source\", function (){",
 											"        let resLngLat = myJson.waypoints[0].location[0] + \",\" + myJson.waypoints[0].location[1];",
-											"        let envLngLat = postman.getEnvironmentVariable(\"longitudeP1\") + \",\" + postman.getEnvironmentVariable(\"latitudeP1\");",
+											"        let envLngLat = postman.getEnvironmentVariable(\"longitudeP\"+mySource) + \",\" + postman.getEnvironmentVariable(\"latitudeP\"+mySource);",
 											"            resLngLat =   ",
 											"            assert(resLngLat == envLngLat);",
 											"",
@@ -653,21 +658,21 @@
 											"    ",
 											"    pm.test(\"First Parameter Name Must be the Trip Source\", function (){",
 											"        let resName = myJson.waypoints[0].name;",
-											"        let envName = postman.getEnvironmentVariable(\"nameP1\");",
+											"        let envName = postman.getEnvironmentVariable(\"nameP\"+mySource);",
 											"        assert(resName == envName);",
 											"",
 											"    });",
 											"    ",
 											"    pm.test(\"Last Parameter Lng and Lat Must be the Trip Destination\", function (){",
 											"        let resLngLat = myJson.waypoints[2].location[0] + \",\" + myJson.waypoints[2].location[1];",
-											"        let envLngLat = postman.getEnvironmentVariable(\"longitudeP2\") + \",\" + postman.getEnvironmentVariable(\"latitudeP2\");",
+											"        let envLngLat = postman.getEnvironmentVariable(\"longitudeP\"+myDestination) + \",\" + postman.getEnvironmentVariable(\"latitudeP\"+myDestination);",
 											"            assert(resLngLat == envLngLat);",
 											"",
 											"    });",
 											"    ",
 											"    pm.test(\"Last Parameter Name Must be the Trip Destination\", function (){",
 											"        let resName = myJson.waypoints[2].name;",
-											"        let envName = postman.getEnvironmentVariable(\"nameP2\");",
+											"        let envName = postman.getEnvironmentVariable(\"nameP\"+myDestination);",
 											"        assert(resName == envName);",
 											"",
 											"    });",
@@ -704,14 +709,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{BASE_URL}}/{{URI_TRIP}}/{{SERVICE}}/{{longitudeP1}},{{latitudeP1}};{{longitudeP0}},{{latitudeP0}};{{longitudeP2}},{{latitudeP2}}?source=first&destination=last",
+									"raw": "{{BASE_URL}}/{{URI_TRIP}}/{{SERVICE}}/{{longitudeP2}},{{latitudeP2}};{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}}?source=first&destination=last\n",
 									"host": [
 										"{{BASE_URL}}"
 									],
 									"path": [
 										"{{URI_TRIP}}",
 										"{{SERVICE}}",
-										"{{longitudeP1}},{{latitudeP1}};{{longitudeP0}},{{latitudeP0}};{{longitudeP2}},{{latitudeP2}}"
+										"{{longitudeP2}},{{latitudeP2}};{{longitudeP0}},{{latitudeP0}};{{longitudeP1}},{{latitudeP1}}"
 									],
 									"query": [
 										{
@@ -720,11 +725,11 @@
 										},
 										{
 											"key": "destination",
-											"value": "last"
+											"value": "last\n"
 										}
 									]
 								},
-								"description": "# Test Description\nValidates whether the API is returning the aproximate better trip. It makes the first coordinate the source and makes the last coordinate the destination\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Poinsts, First Paramter to be the Source and Last Paramter to be destination\\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs"
+								"description": "# Test Description\nValidates whether the API is returning the aproximate better trip. It makes the first coordinate the source and makes the last coordinate the destination\n# Test Scope\t\nPositive\n# Assertions\t\nResponse: Time, Status Code \\\nSteps: Name, Distance, Durantion and Driving Side \\\nWaypoints: Waypoint Names, Distances between Poinsts, First Paramter to be the Source and Last Paramter to be destination \\\nInput: Waypoints Lng, Lat, Name equal to Test Environment inputs\n# Remarks\nTo change the Source and Destination order please go to Pre-request Script tab and perform the following instructions: \\\n1 - Change the variables: mySource and myDestination = 1 \\\n2 - Change the coordinates order in ENDpoint URL"
 							},
 							"response": []
 						}
@@ -1475,7 +1480,7 @@
 										"{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}"
 									]
 								},
-								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when API is not able to find routes between coordinates\n\n# BUG \nRoute is retrieving route between two near addresses when it is informed overseas route. \\\nRoute 0 = 13.388798,52.517033 (Friedrichstraße - Berlin - Deustchland) \\\nOverseas route = -45.88694,-23.17944 (Jardin Bela Vista - Sao Paulo - Brasil) \\\nENDPOINT = http://192.168.99.100:5000/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944 \\\nError is happening on latest OSRM version. ERror is not happening on OSRM DEMO server. Please try: \\ https://router.project-osrm.org/route/v1/driving/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944\n\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when API is not able to find routes between coordinates\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code\n\n# BUG \nID: 1 \\\nDescription: Route Service is retrieving route between two near addresses when API calls overseas route \\\nSteps to reproduce:  \\\n\t1 - Prepare Route Serivce ENDPOINT with Base URL + Route Service URI . e.g http://192.168.99.100:5000/route/v1/driving \\\n\t2 - Add coordinate 0 to the ENDPOINT. e.g Route 0 = 13.388798,52.517033 (Friedrichstraße - Berlin - Deustchland)  \\\n\t3 - Add an overseas coordinate to the ENDPOINT. e.g overseas coordinate  = -45.88694,-23.17944 (Jardin Bela Vista - Sao Paulo - Brasil) \\\n\t4 - Run the request \\\nExpected behavior: API should return the message \"no route found\" \\\nActual: API is replacing the overseas coordinate with another existing coordinate. e.g 13.113544,52.386378 (Paul-Neumann-Straße - Postdam - Deustchland \\\nTest Data: ENDPOINT = http://192.168.99.100:5000/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944  \\\nRemarks: Error is happening on latest OSRM version. ERror is not happening on OSRM DEMO server. \\\nPlease try: \\ https://router.project-osrm.org/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944"
 							},
 							"response": []
 						}
@@ -1667,7 +1672,7 @@
 										"{{longitudeP0}},{{latitudeP0}};{{invalidOverseasLongitude}},{{invalidOverseasLatitude}}"
 									]
 								},
-								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when API is not able to find routes between coordinates\n\n# BUG \nRoute is retrieving route between two near addresses when it is informed overseas route. \\\nRoute 0 = 13.388798,52.517033 (Friedrichstraße - Berlin - Deustchland) \\\nOverseas route = -45.88694,-23.17944 (Jardin Bela Vista - Sao Paulo - Brasil) \\\nENDPOINT = http://192.168.99.100:5000/trip/v1/driving/13.388798,52.517033;-45.88694,-23.17944 \\\nError is happening on latest OSRM version. ERror is not happening on OSRM DEMO server. Please try: \\ https://router.project-osrm.org/trip/v1/driving/route/v1/driving/13.388798,52.517033;-45.88694,-23.17944\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
+								"description": "# Test Description\nThis Test validates whether the API is handling with response code errors when API is not able to find routes between coordinates\n\n# BUG \nID: 2 \\\nDescription: Trip Service is retrieving route between two near addresses when API calls overseas route \\\nSteps to reproduce:  \\\n\t1 - Prepare Route Serivce ENDPOINT with Base URL + Trip Service URI . e.g http://192.168.99.100:5000/trip/v1/driving \\\n\t2 - Add coordinate 0 to the ENDPOINT. e.g Route 0 = 13.388798,52.517033 (Friedrichstraße - Berlin - Deustchland)  \\\n\t3 - Add an overseas coordinate to the ENDPOINT. e.g overseas coordinate  = -45.88694,-23.17944 (Jardin Bela Vista - Sao Paulo - Brasil) \\\n\t4 - Run the request \\\nExpected behavior: API should return the message \"no route found\" \\\nActual: API is replacing the overseas coordinate with another existing coordinate. e.g 13.113544,52.386378 (Paul-Neumann-Straße - Postdam - Deustchland \\\nTest Data: ENDPOINT = http://192.168.99.100:5000/trip/v1/driving/13.388798,52.517033;-45.88694,-23.17944  \\\nRemarks: Error is happening on latest OSRM version. ERror is not happening on OSRM DEMO server. \\\nPlease try: \\ https://router.project-osrm.org/trip/v1/driving/13.388798,52.517033;-45.88694,-23.17944\n\n\n\n# Test Scope\t\nNegative\n# Assertions\t\nResponse: Time, Status Code"
 							},
 							"response": []
 						}
